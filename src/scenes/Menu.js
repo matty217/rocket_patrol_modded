@@ -63,7 +63,7 @@ class Menu extends Phaser.Scene {
             // multiplayer mode
             game.settings = {
                 spaceshipSpeed: -4,
-                gameTimer: 1000
+                gameTimer: 60000
             }
             this.sound.play('sfx_select');
             this.scene.start('playScene2');

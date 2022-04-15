@@ -12,14 +12,13 @@ class Spaceship extends Phaser.GameObjects.Sprite {
         }
 
         this.direction = direction;
-        console.log(this.moveSpeed);
     }
 
 
     update() {
         //moving the spaceship
         this.x += this.moveSpeed;
-        console.log(this.x);
+        // console.log(this.x);
         // wrap around the screen when crossed
         if(this.direction == 0) {
             if (this.x <= 0 - this.width) {
