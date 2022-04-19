@@ -5,10 +5,10 @@ class Play2 extends Phaser.Scene {
 
     preload() {
         // this is for loading the images/tile sprites
-        this.load.image('rocket', './assets/gator.png');
-        this.load.image('spaceship', './assets/spaceship.png');
+        this.load.image('rocket', './assets/meat.png');
+        this.load.image('spaceship', './assets/ally.png');
         this.load.image('starfield', './assets/water.png');
-        this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
+        this.load.spritesheet('explosion', './assets/gator_eat.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 4});
     }
 
     create() {
@@ -26,17 +26,32 @@ class Play2 extends Phaser.Scene {
 
         // adding the rocket 1
         this.p1Rocket = new Rocket(this, game.config.width/3, game.config.height - borderUISize - borderPadding, 'rocket', 0, 0).setOrigin(0.5, 0);
-        this.p1Rocket.scale = 4;
+        this.p1Rocket.scale = 2;
 
         // adding the rocket 2
         this.p2Rocket = new Rocket(this, game.config.width * 2/3, game.config.height - borderUISize - borderPadding, 'rocket', 0, 1).setOrigin(0.5, 0);
-        this.p2Rocket.scale = 4;
+        this.p2Rocket.scale = 2;
 
         // adding in the spaceship enemies
-        this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4, 'spaceship', 0, 30, 6, 1).setOrigin(0, 0);
-        this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'spaceship', 0, 20, -8, 0).setOrigin(0,0);
+        this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4, 'spaceship', 0, 30, 4, 1).setOrigin(0, 0);
+        this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'spaceship', 0, 20, -3, 0).setOrigin(0,0);
         this.ship03 = new Spaceship(this, game.config.width, borderUISize*6 + borderPadding*4, 'spaceship', 0, 10, 0, 0).setOrigin(0,0);
 
+        // flipping the sprite depending if they are traveling to the right or not.
+        if (this.ship01.direction == 1) {
+            this.ship01.flipX = true;
+        }
+        if (this.ship02.direction == 1) {
+            this.ship02.flipX = true;
+        }
+        if (this.ship03.direction == 1) {
+            this.ship03.flipX = true;
+        }
+
+        // optionally changing the size of the "enemy" sprites
+        this.ship01.scale = 1;
+        this.ship02.scale = 1;
+        this.ship03.scale = 1;
 
         // defining each of the keys here
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
@@ -88,6 +103,22 @@ class Play2 extends Phaser.Scene {
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or <- fr Menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
+
+        // displaying the clock
+        let clockConfig = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '#FFB141',
+            color: '#843605',
+            align: 'center',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 100
+        }
+        this.clockTime = game.settings.gameTimer / 1000;
+        this.clock = this.add.text(game.config.width / 2 - clockConfig.fixedWidth / 2, borderUISize + borderPadding * 2, this.clockTime, clockConfig);
     }
 
     //called every tick
@@ -104,6 +135,10 @@ class Play2 extends Phaser.Scene {
         }
 
         this.starfield.tilePositionX -= 5;
+
+        // update the time on the clock
+        this.clockTime -= (1/60);
+        this.clock.setText(Math.floor(this.clockTime));
 
         //set which player won
         if (this.gameOver) {
