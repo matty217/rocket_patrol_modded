@@ -23,8 +23,6 @@ class Play2 extends Phaser.Scene {
         // places the tile sprite (background)
         this.water = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'water').setOrigin(0, 0);
 
-        //update player score
-        this.winner;
 
         // adding meat and boat 1
         this.p1Boat = new Boat(this, game.config.width/3, game.config.height - 2*borderUISize - borderPadding, 'boat', 0, 0).setOrigin(0.5, 0);
@@ -92,10 +90,10 @@ class Play2 extends Phaser.Scene {
         this.p1Score = 0;
         this.p2Score = 0;
 
-        // displaying the P1 score
+        // displaying the score
         let scoreConfig = {
             fontFamily: "Lucida Console",
-            fontSize: '28px',
+            fontSize: '26px',
             backgroundColor: '#679b2b',
             color: '#3b6906',
             align: 'center',
@@ -261,7 +259,7 @@ shipExplode(rocket, ship) {
     });
     // adding to the score
     if (rocket.player == 0) {
-        this.p1Score += 20*ship.points;
+        this.p1Score += ship.points;
         this.scoreLeft.text = this.p1Score;
     }
     if (rocket.player == 1) {
