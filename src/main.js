@@ -12,15 +12,6 @@
 //Two Player mode and single player mode both available
 
 
-
-
-
-
-
-
-
-
-
 let config = {
     type: Phaser.CANVAS,
     width: 840, //640,

@@ -26,7 +26,7 @@ class Play extends Phaser.Scene {
         // adding meat and boat 1
         this.p1Boat = new Boat(this, game.config.width/3, game.config.height - 2*borderUISize - borderPadding, 'boat', 0, 0).setOrigin(0.5, 0);
 
-        this.p1Rocket = new Rocket(this, game.config.width/3, game.config.height - 2.5*borderUISize - borderPadding, 'rocket', 0, 0, this.p1Boat).setOrigin(0.5, 0);
+        this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - 2.5*borderUISize - borderPadding, 'rocket', 0, 0, this.p1Boat).setOrigin(0.5, 0);
         this.p1Rocket.scale = 1;
 
         // adding in the spaceship enemies
