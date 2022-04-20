@@ -3,12 +3,8 @@ class Spaceship extends Phaser.GameObjects.Sprite {
         super(scene, x, y, texture, frame);
         scene.add.existing(this);
         this.points = pointValue;
-        if (moveSpeed == 0) {
-            this.moveSpeed = game.settings.spaceshipSpeed;
-        }
-        else {
-            this.moveSpeed = moveSpeed;
-        }
+        this.extraSpeed = game.settings.spaceshipSpeed;
+        this.moveSpeed = moveSpeed;
 
         this.direction = direction;
     }
@@ -17,32 +13,38 @@ class Spaceship extends Phaser.GameObjects.Sprite {
     update() {
         //moving the spaceship
         this.x += this.moveSpeed;
-        // console.log(this.x);
         // wrap around the screen when crossed
         if(this.direction == 0) {
+            this.flipX = false;
             if (this.x <= 0 - this.width) {
                     this.reset();
                 }
         }
         else if (this.direction == 1) {
+            this.flipX = true;
             if (this.x >= game.config.width) {
                 this.reset();
             }
         }
+
+        // set it to face forwards
+
+
     }
     
 
 
     // reset position when destroyed
     reset() {
-        this.moveSpeed = Math.round(Math.random() * 5) + 2;
+        // this.moveSpeed = Math.round(Math.random() * 5) + 2;
+        this.direction = Math.round(Math.random());                                 //randomize direction
         if(this.direction == 0) {
-            this.moveSpeed = -(Math.round(Math.random() * 5) + 3);
             this.x = game.config.width;
+            this.moveSpeed = -((Math.round(Math.random() * 5) + this.extraSpeed));      //randomize speed
         }
-        else if(this.direction == 1) {
-            this.moveSpeed = (Math.round(Math.random() * 5) + 3);
+        else {
             this.x = 0 - this.width;
+            this.moveSpeed = (Math.round(Math.random() * 5) + this.extraSpeed);       //randomize speed
         }
     }
 }

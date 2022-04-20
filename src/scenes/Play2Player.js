@@ -23,7 +23,6 @@ class Play2 extends Phaser.Scene {
         // places the tile sprite (background)
         this.water = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'water').setOrigin(0, 0);
 
-
         // adding meat and boat 1
         this.p1Boat = new Boat(this, game.config.width/3, game.config.height - 2*borderUISize - borderPadding, 'boat', 0, 0).setOrigin(0.5, 0);
 
@@ -39,7 +38,7 @@ class Play2 extends Phaser.Scene {
         // adding in the spaceship enemies
         this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, game.config.height*2/8, 'spaceship', 0, 30, 4, 1).setOrigin(0, 0);
         this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, game.config.height*3/8, 'spaceship', 0, 20, -3, 0).setOrigin(0,0);
-        this.ship03 = new Spaceship(this, game.config.width, game.config.height*4/8, 'spaceship', 0, 10, 0, 0).setOrigin(0,0);
+        this.ship03 = new Spaceship(this, game.config.width, game.config.height*4/8, 'spaceship', 0, 10, -5, 0).setOrigin(0,0);
 
         // adds the borders
         this.add.sprite(game.config.width / 2, 0, 'parasol').setOrigin(0.5, 0);
@@ -112,9 +111,9 @@ class Play2 extends Phaser.Scene {
         // setting the game length to 60 seconds
         scoreConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
-            this.add.text(game.config.width/2, game.config.height * 1/3, 'GAMA OVAR', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height * 1/3, 'Feeding Complete!', scoreConfig).setOrigin(0.5);
             this.winText = this.add.text(game.config.width/2, game.config.height * 1/2, "Placeholder Text", scoreConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or <- fr Menu', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← to return to the Menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
 
@@ -133,6 +132,12 @@ class Play2 extends Phaser.Scene {
         }
         this.clockTime = game.settings.gameTimer / 1000;
         this.clock = this.add.text(game.config.width / 2 - clockConfig.fixedWidth / 2, borderUISize/2, this.clockTime, clockConfig);
+
+        //play background music
+        this.backgroundMusic = game.sound.add('background_music');
+        this.backgroundMusic.loop = true;
+        this.backgroundMusic.play();
+
     }
 
     //called every tick
@@ -140,6 +145,7 @@ class Play2 extends Phaser.Scene {
 
         // check for restart input
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
+            this.backgroundMusic.stop();
             this.scene.restart();
         }
 
@@ -172,6 +178,8 @@ class Play2 extends Phaser.Scene {
                 }
             }
         }
+
+        // adding background music
 
         if (!this.gameOver) {
             // update rocket
@@ -267,8 +275,20 @@ shipExplode(rocket, ship) {
         this.scoreRight.text = this.p2Score;
     }
 
+
+
     // play exploding sound
-    //this.sound.play('sfx_explosion');
+    this.sfxChomp();
+}
+
+sfxChomp() {
+    var rand = Math.round(Math.random());
+    if (rand == 0) {
+        this.sound.play('sfx_chomp1');
+    }
+    else {
+        this.sound.play('sfx_chomp2');
+    }
 }
 
 }

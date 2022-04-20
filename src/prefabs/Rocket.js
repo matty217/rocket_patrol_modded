@@ -67,7 +67,6 @@ class Rocket extends Phaser.GameObjects.Sprite {
     // randomize throwing sound
     sfxThrow() {
         var rand = Math.round(Math.random()*(2));
-        console.log(rand);
 
         if (rand == 0) {
             this.sfx_throw1.play();
