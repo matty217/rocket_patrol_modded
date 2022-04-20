@@ -7,8 +7,8 @@
 //10 pts - Display Time on Screen
 
 //MISC
-//randomize enemy speed and direction on reset
-//new player character that fires the 'rockets'
+//Randomize enemy speed and direction on reset
+//New player character that fires the 'rockets'
 //Two Player mode and single player mode both available
 
 
